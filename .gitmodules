@@ -1,0 +1,6 @@
+[submodule "src/cert-manager"]
+	path = src/cert-manager
+	url = https://github.com/zyrakq/cert-manager-stack.git
+[submodule "src/elasticsearch"]
+	path = src/elasticsearch
+	url = https://github.com/zyrakq/elasticsearch-stack.git
