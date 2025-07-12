@@ -1,21 +1,35 @@
-# 📊 Kibana Stack
+# 📊 Kibana Service
 
-Docker-based Kibana deployment with flexible certificate management and authentication options.
+Docker-based Kibana deployment with security enabled.
 
-## 🔧 Configuration
+## ✨ Features
 
-Copy the example environment file and configure your settings:
+- 🔒 Kibana with X-Pack security (configurable version)
+- 🔑 Authentication with configurable password
+- 🌍 Multiple environments (development, production, devcontainer)
+- 🔐 SSL/TLS support via Let's Encrypt and Step CA integration
+- 💾 Persistent data storage with Docker volumes
+
+## ⚙️ Configuration
+
+Create `.env` file from template:
 
 ```sh
 cp .env.example .env
 ```
 
-Edit `.env` with your specific configuration:
+Configure variables:
 
-- `KIBANA_PASSWORD` - Password for kibana_system user
-- `VIRTUAL_HOST` - Domain name for your Kibana instance
-- `LETSENCRYPT_EMAIL` - Email for Let's Encrypt certificates
-- `STEP_CA_TRUST` - Enable Step CA certificate trust
+```sh
+# Required
+KIBANA_VERSION=9.0.2
+KIBANA_PASSWORD=your_secure_password
+
+# Required for production
+VIRTUAL_HOST=kibana.yourdomain.com
+LETSENCRYPT_HOST=kibana.yourdomain.com
+LETSENCRYPT_EMAIL=your-email@domain.com
+```
 
 ## 🔐 ELK Setup with Basic Auth
 
@@ -46,22 +60,82 @@ curl --location \
 }'
 ```
 
-## 🚀 Quick Start
-
-Use the deployment script to start Kibana with your preferred certificate management:
+## 🚀 Deployment
 
 ```sh
 # Local development with port forwarding
 ./deploy.sh --forwarding
 
+# Local development with Elasticsearch integration
+./deploy.sh --forwarding --stack
+
 # Production with Let's Encrypt certificates
-./deploy.sh --letsencrypt
+./deploy.sh --letsencrypt --ssl
 
 # Virtual network with Step CA certificates
-./deploy.sh --step-ca
+./deploy.sh --step-ca --ssl
+
+# DevContainer environment
+./deploy.sh --devcontainer
+
+# Show help
+./deploy.sh --help
 ```
 
-## 🔧 Configuration Integration Services
+## 🌍 Environment Details
+
+### 🛠️ Forwarding (Local Development)
+
+- **Ports:** 5601 exposed to host
+- **Network:** `elk-network` (optional with --stack)
+- **SSL:** Disabled
+
+### 🔐 Let's Encrypt (Production)
+
+- **Ports:** Internal only (proxied via nginx)
+- **Network:** `letsencrypt-network` + `elk-network` (optional with --stack)
+- **SSL:** Automatic Let's Encrypt certificates
+
+### 🏢 Step CA (Virtual Network)
+
+- **Ports:** Internal only (proxied via nginx)
+- **Network:** `step-ca-network` + `elk-network` (optional with --stack)
+- **SSL:** Step CA managed certificates
+
+### 🐳 DevContainer
+
+- **Network:** `kibana-stack-workspace-network`
+- **Usage:** VS Code DevContainer development
+
+## 🔗 Stack Integration
+
+### Network Connection
+
+Use `--stack` argument to connect Kibana to Elasticsearch via `elk-network`:
+
+```sh
+# Connect to Elasticsearch in the same Docker network (local development)
+./deploy.sh --forwarding --stack
+```
+
+### SSL Configuration
+
+Use `--ssl` argument to enable SSL configuration for Elasticsearch connection:
+
+```sh
+# Enable SSL for secure Elasticsearch connection (production environments)
+./deploy.sh --letsencrypt --ssl
+./deploy.sh --step-ca --ssl
+```
+
+**Notes:**
+
+- DevContainer mode doesn't require `--stack` as it uses its own network
+- `--ssl` is typically used for standalone SSL connections to external Elasticsearch
+- `--stack` is for connecting to Elasticsearch in the same Docker network
+- Both arguments are independent and serve different use cases
+
+## � Configuration Integration Services
 
 Create an application user for your services:
 
@@ -104,22 +178,11 @@ Example of adding configurations via *Serilog*:
 }
 ```
 
-## 🌐 Certificate Management Options
+## 🔗 Integration
 
-### Port Forwarding (Development)
+### Certificate Management
 
-- Direct port access on localhost:5601
-- No SSL certificates required
-- Ideal for local development
+This service integrates with different certificate management stacks:
 
-### Let's Encrypt (Production)
-
-- Automatic SSL certificate generation and renewal
-- Requires internet access and valid domain
-- Production-ready with trusted certificates
-
-### Step CA (Virtual Networks)
-
-- Self-signed certificate authority
-- Works in isolated environments
-- Automatic certificate distribution within Docker networks
+- **Let's Encrypt:** [`../letsencrypt-manager/README.md`](../letsencrypt-manager/README.md) - For production deployments with internet access using public SSL certificates
+- **Step CA:** [`../step-ca-manager/README.md`](../step-ca-manager/README.md) - For virtual Docker networks without internet access using self-signed trusted certificate authority

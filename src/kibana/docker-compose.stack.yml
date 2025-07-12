@@ -1,0 +1,9 @@
+services:
+  kibana:
+    networks:
+      - elk-network
+
+networks:
+  elk-network:
+    name: elk-network
+    driver: bridge

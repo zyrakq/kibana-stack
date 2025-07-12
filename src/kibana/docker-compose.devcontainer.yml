@@ -1,0 +1,8 @@
+services:
+  kibana:
+    networks:
+      - kibana-stack-workspace-network
+
+networks:
+  kibana-stack-workspace-network:
+    external: true
