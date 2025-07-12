@@ -1,6 +1,8 @@
 server.name: kibana
 server.host: "0.0.0.0"
-elasticsearch.hosts: ["http://elasticsearch:9200"]
+elasticsearch.hosts: ["https://elastic.ax:443"]
+elasticsearch.ssl.certificateAuthorities: ["/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem"]
+elasticsearch.ssl.verificationMode: full
 monitoring.ui.container.elasticsearch.enabled: true
 xpack.security.authc.providers:
   basic.basic1:

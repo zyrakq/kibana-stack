@@ -5,9 +5,11 @@ services:
       VIRTUAL_HOST: ${VIRTUAL_HOST}
       LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+      STEP_CA_TRUST: ${STEP_CA_TRUST}
     networks:
-      - cert-network
+      - step-ca-network
 
-  cert-network:
-    name: cert-network
+networks:
+  step-ca-network:
+    name: step-ca-network
     external: true

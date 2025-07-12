@@ -20,8 +20,7 @@ services:
 
 volumes:
   kb_data:
-    name: elk_es_data
-
+    name: kb_data
 
 networks:
   elk-network:
