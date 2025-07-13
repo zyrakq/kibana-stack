@@ -1,5 +1,0 @@
-services:
-  kibana:
-    environment:
-      ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem"
-      ELASTICSEARCH_SSL_VERIFICATIONMODE: full

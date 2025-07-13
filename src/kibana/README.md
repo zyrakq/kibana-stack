@@ -70,10 +70,10 @@ curl --location \
 ./deploy.sh --forwarding --stack
 
 # Production with Let's Encrypt certificates
-./deploy.sh --letsencrypt --ssl
+./deploy.sh --letsencrypt
 
 # Virtual network with Step CA certificates
-./deploy.sh --step-ca --ssl
+./deploy.sh --step-ca
 
 # DevContainer environment
 ./deploy.sh --devcontainer
@@ -120,20 +120,10 @@ Use `--stack` argument to connect Kibana to Elasticsearch via `elk-network`:
 
 ### SSL Configuration
 
-Use `--ssl` argument to enable SSL configuration for Elasticsearch connection:
-
-```sh
-# Enable SSL for secure Elasticsearch connection (production environments)
-./deploy.sh --letsencrypt --ssl
-./deploy.sh --step-ca --ssl
-```
-
 **Notes:**
 
 - DevContainer mode doesn't require `--stack` as it uses its own network
-- `--ssl` is typically used for standalone SSL connections to external Elasticsearch
 - `--stack` is for connecting to Elasticsearch in the same Docker network
-- Both arguments are independent and serve different use cases
 
 ## � Configuration Integration Services
 
