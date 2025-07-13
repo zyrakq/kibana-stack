@@ -3,7 +3,7 @@ services:
     image: kibana:${KIBANA_VERSION}
     container_name: kibana
     volumes:
-      - kb_data:/usr/share/kibana/data
+      - kb-data:/usr/share/kibana/data
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -20,5 +20,5 @@ services:
       XPACK_SECURITY_AUTHC_PROVIDERS_BASIC_BASIC1_ORDER: 0
 
 volumes:
-  kb_data:
-    name: kb_data
+  kb-data:
+    name: kb-data

@@ -6,4 +6,4 @@ services:
 networks:
   elk-network:
     name: elk-network
-    driver: bridge
+    external: true

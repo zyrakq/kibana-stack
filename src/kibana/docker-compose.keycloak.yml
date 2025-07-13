@@ -1,0 +1,35 @@
+# Docker Compose override for Keycloak OIDC integration
+# Usage: ./deploy.sh --forwarding --keycloak
+
+services:
+  kibana:
+    environment:
+      # OIDC Configuration for Keycloak integration
+      XPACK_SECURITY_AUTHC_PROVIDERS_OIDC_OIDC1_ORDER: 2
+      XPACK_SECURITY_AUTHC_PROVIDERS_OIDC_OIDC1_REALM: oidc1
+      XPACK_SECURITY_AUTHC_PROVIDERS_BASIC_BASIC1_ORDER: 1
+
+      # OIDC Realm Configuration
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_ORDER: 0
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_RP_CLIENT_ID: ${KEYCLOAK_CLIENT_ID:-kibana}
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_RP_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_RP_RESPONSE_TYPE: code
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_RP_REQUESTED_SCOPES: "openid,profile,email,groups"
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_RP_REDIRECT_URI: ${KIBANA_BASE_URL:-http://localhost:5601}/api/security/oidc/callback
+
+      # # OIDC Provider Configuration
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_OP_ISSUER: ${KEYCLOAK_BASE_URL:-http://localhost:8080}/realms/${KEYCLOAK_REALM:-master}
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_OP_AUTHORIZATION_ENDPOINT: ${KEYCLOAK_BASE_URL:-http://localhost:8080}/realms/${KEYCLOAK_REALM:-master}/protocol/openid-connect/auth
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_OP_TOKEN_ENDPOINT: ${KEYCLOAK_BASE_URL:-http://localhost:8080}/realms/${KEYCLOAK_REALM:-master}/protocol/openid-connect/token
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_OP_USERINFO_ENDPOINT: ${KEYCLOAK_BASE_URL:-http://localhost:8080}/realms/${KEYCLOAK_REALM:-master}/protocol/openid-connect/userinfo
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_OP_ENDSESSION_ENDPOINT: ${KEYCLOAK_BASE_URL:-http://localhost:8080}/realms/${KEYCLOAK_REALM:-master}/protocol/openid-connect/logout
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_OP_JWKSET_PATH: ${KEYCLOAK_BASE_URL:-http://localhost:8080}/realms/${KEYCLOAK_REALM:-master}/protocol/openid-connect/certs
+
+      # # Claims mapping
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_CLAIMS_PRINCIPAL: preferred_username
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_CLAIMS_GROUPS: groups
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_CLAIMS_NAME: name
+      # XPACK_SECURITY_AUTHC_REALMS_OIDC_OIDC1_CLAIMS_MAIL: email
+
+      # Trust Step CA intermediate certificate for HTTPS Keycloak access (required for OIDC)
+      STEP_CA_TRUST: ${STEP_CA_TRUST:-true}

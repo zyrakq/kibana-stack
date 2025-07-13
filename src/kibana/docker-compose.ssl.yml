@@ -1,5 +1,13 @@
 services:
   kibana:
+    volumes:
+      - step-ca-certs:/etc/nginx/certs
     environment:
-      ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem"
-      ELASTICSEARCH_SSL_VERIFICATIONMODE: full
+      # ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem"
+      ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: "/etc/nginx/certs/elasticsearch.chain.pem"
+      ELASTICSEARCH_SSL_VERIFICATIONMODE: none
+
+volumes:
+  step-ca-certs:
+    name: step-ca-certs
+    external: true
